@@ -3,6 +3,8 @@
  * /proc/schedstat implementation
  */
 
+#include <linux/delay.h>
+
 void __update_stats_wait_start(struct rq *rq, struct task_struct *p,
 			       struct sched_statistics *stats)
 {
@@ -105,14 +107,28 @@ void __update_stats_enqueue_sleeper(struct rq *rq, struct task_struct *p,
  */
 #define SCHEDSTAT_VERSION 16
 
+rwlock_t wfe_lock = __RW_LOCK_UNLOCKED(wfe_lock);
+int wfe_locked = 0;
+
 static int show_schedstat(struct seq_file *seq, void *v)
 {
 	int cpu;
 
 	if (v == (void *)1) {
+		trace_printk("WFE-Test: Require write lock.\n");
+		trace_printk("WFE-Test: Lock begin.\n");
+		write_lock(&wfe_lock);
+		trace_printk("WFE-Test: Lock done.\n");
+		msleep(2000);
+		trace_printk("WFE-Test: Unlock all CPU.\n");
+		trace_printk("WFE-Test: Unlock begin.\n");
+		write_unlock(&wfe_lock);
+		trace_printk("WFE-Test: Unlock done.\n");
+		return 0;
 		seq_printf(seq, "version %d\n", SCHEDSTAT_VERSION);
 		seq_printf(seq, "timestamp %lu\n", jiffies);
 	} else {
+		return 0;
 		struct rq *rq;
 #ifdef CONFIG_SMP
 		struct sched_domain *sd;

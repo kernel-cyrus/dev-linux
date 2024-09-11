@@ -244,6 +244,8 @@ exit_idle:
 		local_irq_enable();
 }
 
+extern rwlock_t wfe_lock;
+
 /*
  * Generic idle loop implementation
  *
@@ -326,6 +328,15 @@ static void do_idle(void)
 			cpuidle_idle_call();
 		}
 		arch_cpu_idle_exit();
+
+		if (cpu > 0) {
+			trace_printk("WFE-Test: Lock this CPU.\n");
+			trace_printk("WFE-Test: WFE Enter.\n");
+			read_lock(&wfe_lock);
+			trace_printk("WFE-Test: WFE Exit.\n");
+			read_unlock(&wfe_lock);
+			trace_printk("WFE-Test: Continue.\n");
+		}
 	}
 
 	/*
