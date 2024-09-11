@@ -1,0 +1,38 @@
+echo > /sys/kernel/debug/tracing/trace
+cat /sys/kernel/debug/tracing/trace_pipe &
+cat /proc/schedstat &
+taskset -c 1 echo cpu-1 &
+taskset -c 2 echo cpu-2 &
+taskset -c 3 echo cpu-3 &
+taskset -c 4 echo cpu-4 &
+taskset -c 5 echo cpu-5 &
+taskset -c 6 echo cpu-6 &
+taskset -c 7 echo cpu-7 &
+
+---------------------------------
+          <idle>-0       [003] .N.1   117.805105: do_idle: WFE-Test: WFE Enter.
+          <idle>-0       [006] .N.1   117.806045: do_idle: WFE-Test: WFE Enter.
+          <idle>-0       [005] .N.1   117.812692: do_idle: WFE-Test: WFE Enter.
+          <idle>-0       [004] .N.1   117.819989: do_idle: WFE-Test: WFE Enter.
+          <idle>-0       [002] .N.1   117.820580: do_idle: WFE-Test: WFE Enter.
+          <idle>-0       [007] .N.1   117.821169: do_idle: WFE-Test: WFE Enter.
+          <idle>-0       [001] .N.1   117.821718: do_idle: WFE-Test: WFE Enter.
+          <idle>-0       [010] .N.1   117.822313: do_idle: WFE-Test: WFE Enter.
+          <idle>-0       [009] .N.1   117.822881: do_idle: WFE-Test: WFE Enter.
+          <idle>-0       [011] .N.1   117.823438: do_idle: WFE-Test: WFE Enter.
+          <idle>-0       [008] .N.1   117.824007: do_idle: WFE-Test: WFE Enter.
+             cat-2385    [000] ....   119.799975: show_schedstat: WFE-Test: Unlock all CPU.
+             cat-2385    [000] ....   119.799988: show_schedstat: WFE-Test: Unlock begin.
+             cat-2385    [000] ..Zff  119.799989: show_schedstat: WFE-Test: Unlock done.
+          <idle>-0       [003] .N.2   119.799990: do_idle: WFE-Test: WFE Exit.
+          <idle>-0       [006] .N.2   119.799990: do_idle: WFE-Test: WFE Exit.
+          <idle>-0       [005] .N.2   119.799991: do_idle: WFE-Test: WFE Exit.
+          <idle>-0       [004] .N.2   119.799992: do_idle: WFE-Test: WFE Exit.
+          <idle>-0       [002] .N.2   119.799993: do_idle: WFE-Test: WFE Exit.
+          <idle>-0       [007] .N.2   119.799994: do_idle: WFE-Test: WFE Exit.
+          <idle>-0       [001] .N.2   119.799995: do_idle: WFE-Test: WFE Exit.
+          <idle>-0       [010] .N.2   119.799996: do_idle: WFE-Test: WFE Exit.
+          <idle>-0       [009] .N.2   119.799996: do_idle: WFE-Test: WFE Exit.
+          <idle>-0       [011] .N.2   119.799997: do_idle: WFE-Test: WFE Exit.
+          <idle>-0       [008] .N.2   119.799998: do_idle: WFE-Test: WFE Exit.
+---------------------------------
