@@ -330,10 +330,12 @@ static void do_idle(void)
 		arch_cpu_idle_exit();
 
 		if (cpu > 0) {
+			u64 cur_time_ns;
 			trace_printk("WFE-Test: Lock this CPU.\n");
 			trace_printk("WFE-Test: WFE Enter.\n");
 			read_lock(&wfe_lock);
-			trace_printk("WFE-Test: WFE Exit.\n");
+			cur_time_ns = ktime_get_ns();
+			trace_printk("WFE-Test: WFE Exit. %llu\n", cur_time_ns);
 			read_unlock(&wfe_lock);
 			trace_printk("WFE-Test: Continue.\n");
 		}

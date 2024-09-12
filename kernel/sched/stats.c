@@ -115,6 +115,7 @@ static int show_schedstat(struct seq_file *seq, void *v)
 	int cpu;
 
 	if (v == (void *)1) {
+		u64 cur_time_ns;
 		trace_printk("WFE-Test: Require write lock.\n");
 		trace_printk("WFE-Test: Lock begin.\n");
 		write_lock(&wfe_lock);
@@ -122,8 +123,9 @@ static int show_schedstat(struct seq_file *seq, void *v)
 		msleep(2000);
 		trace_printk("WFE-Test: Unlock all CPU.\n");
 		trace_printk("WFE-Test: Unlock begin.\n");
+		cur_time_ns = ktime_get_ns();
 		write_unlock(&wfe_lock);
-		trace_printk("WFE-Test: Unlock done.\n");
+		trace_printk("WFE-Test: Unlock done. %llu\n", cur_time_ns);
 		return 0;
 		seq_printf(seq, "version %d\n", SCHEDSTAT_VERSION);
 		seq_printf(seq, "timestamp %lu\n", jiffies);
