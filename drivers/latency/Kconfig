@@ -1,0 +1,12 @@
+config LATENCY_TRACKER
+    tristate "System latency tracking"
+    help
+      The module is used to track various system latency, including 
+      scheduler latency, io latency, network latency. It provide a
+      procsys file node to show global and task statistics, when the
+      latency exceeds threshold, it will trigger a trace with both
+      kernel stack and user stack, so you know why and where couse
+      the task delay.
+
+      If you say M here, the module will be built as a module.
+      If unsure, say N.
